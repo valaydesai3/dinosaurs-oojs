@@ -134,11 +134,12 @@ Dino.prototype.compareHeight = function (humanHeight) {
 // Add tiles to DOM
 generateTile = (facts) => {
   facts.forEach((item) => {
+    console.log(item);
     document.getElementById('grid').innerHTML += `
     <div class="grid-item">  
     <h3>${item.dino.species}</h3>
     <img src="${item.dino.image}" alt="image" />
-    <p>${item.dino.species !== 'human' ? item.fact : ''}</p>
+    <p>${item.dino.species !== 'human' ? item.fact : item.dino.name}</p>
     </div>
     `;
   });
