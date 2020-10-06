@@ -63,23 +63,31 @@ const compareMe = () => {
 
   getDinos().then((dinos) => {
     const result = dinos.slice(0, 4).concat(human).concat(dinos.slice(4, 8));
-    // const funcs = [compareDiet, compareHeight, compareWeight];
-    let facts = [];
-    result.forEach((dino) => {
-      const dietObj = new Dino(dino).compareDiet(human.diet);
-      const weightObj = new Dino(dino).compareWeight(human.weight);
-      const heightObj = new Dino(dino).compareHeight(human.height);
+    const random = Math.floor(Math.random() * 4) + 1;
+    const facts = [];
 
-      facts.push(dietObj);
-      facts.push(weightObj);
-      facts.push(heightObj);
-      generateTile(dino, dietObj);
+    result.forEach((dino) => {
+      switch (random) {
+        case 1:
+          const dietFact = new Dino(dino).compareDiet(human.diet);
+          facts.push({ dino: dino, fact: dietFact });
+          break;
+        case 2:
+          const weightFact = new Dino(dino).compareWeight(human.weight);
+          facts.push({ dino: dino, fact: weightFact });
+          break;
+        case 3:
+          const heightFact = new Dino(dino).compareHeight(human.height);
+          facts.push({ dino: dino, fact: heightFact });
+          break;
+        case 4:
+          facts.push({ dino: dino, fact: dino.fact });
+          break;
+      }
     });
-    for (let i = 0; i < dinos.length; i++) {
-      const random = Math.floor(Math.random() * dinos.length);
-      console.log(facts[random]);
+    if (facts.length > 0) {
+      generateTile(facts);
     }
-    // console.log(facts[Math.floor(Math.random() * facts.length)]);
   });
 };
 
@@ -124,17 +132,23 @@ Dino.prototype.compareHeight = function (humanHeight) {
 // Generate Tiles for each Dino in Array
 
 // Add tiles to DOM
-generateTile = (dino, dinoObj) => {
-  document.getElementById('grid').innerHTML += `
-  <div class="grid-item">
-          <h3>${dino.species}</h3>
-          <img src="${dino.image ? dino.image : ''}" alt="" />
-          <p>${dino.fact ? dinoObj : ''}</p>
-        </div>
-  `;
+generateTile = (facts) => {
+  facts.forEach((item) => {
+    document.getElementById('grid').innerHTML += `
+    <div class="grid-item">  
+    <h3>${item.dino.species}</h3>
+    <img src="${item.dino.image}" alt="image" />
+    <p>${item.dino.species !== 'human' ? item.fact : ''}</p>
+    </div>
+    `;
+  });
+  removeForm();
 };
 
 // Remove form from screen
+function removeForm() {
+  document.getElementById('dino-compare').style.display = 'none';
+}
 
 // On button click, prepare and display infographic
 document.getElementById('btn').addEventListener('click', compareMe);
