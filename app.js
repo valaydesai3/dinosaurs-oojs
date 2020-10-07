@@ -97,7 +97,7 @@ Dino.prototype.compareDiet = function ({ name, diet }) {
   if (this.diet === humanDiet) {
     return `${this.species} is ${this.diet} while ${name} is ${diet}`;
   } else {
-    return `Both ${this.species} and human are ${this.diet}.`;
+    return `Both ${this.species} and ${name} are ${this.diet}.`;
   }
 };
 
