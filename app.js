@@ -27,7 +27,7 @@ const getDinos = async () => {
 
 // Create Human Object
 class Human {
-  constructor(species = 'human', weight, height, diet, name) {
+  constructor(species = 'Human', weight, height, diet, name) {
     this.name = name;
     this.height = this.getHeightInInches(height);
     this.weight = weight;
@@ -53,7 +53,7 @@ const compareMe = () => {
     const weight = Number(document.getElementById('weight').value);
     const diet = document.getElementById('diet').value.toLowerCase();
     return new Human(
-      'human',
+      'Human',
       weight,
       { feet: feet, inches: inches },
       diet,
@@ -69,15 +69,15 @@ const compareMe = () => {
     result.forEach((dino) => {
       switch (random) {
         case 1:
-          const dietFact = new Dino(dino).compareDiet(human.diet);
+          const dietFact = new Dino(dino).compareDiet(human);
           facts.push({ dino: dino, fact: dietFact });
           break;
         case 2:
-          const weightFact = new Dino(dino).compareWeight(human.weight);
+          const weightFact = new Dino(dino).compareWeight(human);
           facts.push({ dino: dino, fact: weightFact });
           break;
         case 3:
-          const heightFact = new Dino(dino).compareHeight(human.height);
+          const heightFact = new Dino(dino).compareHeight(human);
           facts.push({ dino: dino, fact: heightFact });
           break;
         case 4:
@@ -93,9 +93,9 @@ const compareMe = () => {
 
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
-Dino.prototype.compareDiet = function (humanDiet) {
+Dino.prototype.compareDiet = function ({ name, diet }) {
   if (this.diet === humanDiet) {
-    return `${this.species} is ${this.diet} while human is ${humanDiet}`;
+    return `${this.species} is ${this.diet} while ${name} is ${diet}`;
   } else {
     return `Both ${this.species} and human are ${this.diet}.`;
   }
@@ -103,29 +103,27 @@ Dino.prototype.compareDiet = function (humanDiet) {
 
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
-Dino.prototype.compareWeight = function (humanWeight) {
-  if (this.weight > humanWeight) {
-    return `${this.species} is ${
-      this.weight - humanWeight
-    }lbs heavier than human`;
-  } else if (this.weight < humanWeight) {
-    return `Human is heavier than ${this.species}`;
+Dino.prototype.compareWeight = function ({ name, weight }) {
+  if (this.weight > weight) {
+    return `${this.species} is ${this.weight - weight}lbs heavier than ${name}`;
+  } else if (this.weight < weight) {
+    return `${name} is heavier than ${this.species}`;
   } else {
-    return `${this.species} weigh the same as Human`;
+    return `${this.species} weigh the same as ${name}`;
   }
 };
 
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
-Dino.prototype.compareHeight = function (humanHeight) {
-  if (this.height > humanHeight) {
+Dino.prototype.compareHeight = function ({ name, height }) {
+  if (this.height > height) {
     return `${this.species} is ${
-      this.height - humanHeight
-    }inches taller than human`;
-  } else if (this.height < humanHeight) {
-    return `Human is taller than ${this.species}`;
+      this.height - height
+    }inches taller than ${name}`;
+  } else if (this.height < height) {
+    return `${name} is taller than ${this.species}`;
   } else {
-    return `${this.species} height the same as Human`;
+    return `${this.species} height the same as ${name}`;
   }
 };
 
@@ -134,12 +132,11 @@ Dino.prototype.compareHeight = function (humanHeight) {
 // Add tiles to DOM
 generateTile = (facts) => {
   facts.forEach((item) => {
-    console.log(item);
     document.getElementById('grid').innerHTML += `
     <div class="grid-item">  
     <h3>${item.dino.species}</h3>
     <img src="${item.dino.image}" alt="image" />
-    <p>${item.dino.species !== 'human' ? item.fact : item.dino.name}</p>
+    <p>${item.dino.species !== 'Human' ? item.fact : item.dino.name}</p>
     </div>
     `;
   });
