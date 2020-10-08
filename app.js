@@ -94,7 +94,7 @@ const compareMe = () => {
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
 Dino.prototype.compareDiet = function ({ name, diet }) {
-  if (this.diet === humanDiet) {
+  if (this.diet === diet) {
     return `${this.species} is ${this.diet} while ${name} is ${diet}`;
   } else {
     return `Both ${this.species} and ${name} are ${this.diet}.`;
